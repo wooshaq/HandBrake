@@ -85,7 +85,13 @@ namespace HandBrakeWPF.Themes
                     break;
             }
 
+            // WsQ modern layout palette.
+            bool useWsqDark = useAppTheme == AppThemeMode.Dark
+                              || ((useAppTheme == AppThemeMode.System || useAppTheme == AppThemeMode.Modern) && SystemInfo.IsAppsUsingDarkTheme());
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri(useWsqDark ? "Themes/WsqDark.xaml" : "Themes/WsqLight.xaml", UriKind.Relative) });
+
             Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Views/Styles/Styles.xaml", UriKind.Relative) });
+            Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Views/Styles/WsqStyles.xaml", UriKind.Relative) });
             if (loadBaseStyle)
             {
                 Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Views/Styles/BaseStyles.xaml", UriKind.Relative) });

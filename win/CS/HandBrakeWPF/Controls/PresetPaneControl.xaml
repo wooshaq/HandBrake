@@ -14,8 +14,8 @@
         <converters:BooleanToVisibilityConverter x:Key="boolToVisConverter" />
     </UserControl.Resources>
 
-    <Border CornerRadius="4" BorderBrush="{StaticResource Ui.ContrastLight}" Background="{DynamicResource Ui.Light}" BorderThickness="1">
-        <Grid Margin="5" ZIndex="1">
+    <Border CornerRadius="10" BorderBrush="{DynamicResource Wsq.CardBorder}" Background="{DynamicResource Wsq.Card}" BorderThickness="0">
+        <Grid Margin="0" ZIndex="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -175,7 +175,7 @@
             </Grid>
 
             <ListView x:Name="presetListView" HorizontalAlignment="Stretch" AutomationProperties.Name="Presets List" ToolTip="{x:Static Properties:ResourcesTooltips.MainView_Presets}"
-                              VerticalAlignment="Stretch" Grid.Row="2" Width="350"
+                              VerticalAlignment="Stretch" Grid.Row="2"
                               SelectionMode="Single"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                               SelectionChanged="PresetListView_OnSelectionChanged"

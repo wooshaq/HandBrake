@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- WsQ modern layout palette (dark). Used by Views/Styles/WsqStyles.xaml -->
+    <SolidColorBrush x:Key="Wsq.Background" Color="#0F1012" />
+    <SolidColorBrush x:Key="Wsq.Surface" Color="#141518" />
+    <SolidColorBrush x:Key="Wsq.Card" Color="#17181C" />
+    <SolidColorBrush x:Key="Wsq.CardBorder" Color="#23252B" />
+    <SolidColorBrush x:Key="Wsq.Input" Color="#24262C" />
+    <SolidColorBrush x:Key="Wsq.Hover" Color="#2A2C33" />
+    <SolidColorBrush x:Key="Wsq.Pressed" Color="#33363E" />
+    <SolidColorBrush x:Key="Wsq.TabActive" Color="#2A2C33" />
+    <SolidColorBrush x:Key="Wsq.Text" Color="#ECEDF0" />
+    <SolidColorBrush x:Key="Wsq.Muted" Color="#9A9DA6" />
+    <SolidColorBrush x:Key="Wsq.Accent" Color="#F5B64A" />
+    <SolidColorBrush x:Key="Wsq.AccentHover" Color="#FFC866" />
+    <SolidColorBrush x:Key="Wsq.AccentPressed" Color="#E0A23A" />
+    <SolidColorBrush x:Key="Wsq.AccentText" Color="#1A1305" />
+    <SolidColorBrush x:Key="Wsq.Danger" Color="#2A1717" />
+    <SolidColorBrush x:Key="Wsq.DangerBorder" Color="#5B2A2A" />
+    <SolidColorBrush x:Key="Wsq.DangerText" Color="#FFB4B4" />
+    <SolidColorBrush x:Key="Wsq.Badge" Color="#F5B64A" />
+    <SolidColorBrush x:Key="Wsq.BadgeText" Color="#1A1305" />
+
+</ResourceDictionary>

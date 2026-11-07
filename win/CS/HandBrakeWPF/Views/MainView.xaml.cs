@@ -65,25 +65,10 @@ namespace HandBrakeWPF.Views
             ((IMainViewModel)this.DataContext).AddToQueueWithErrorHandling();
         }
 
-        private void Presets_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void PresetHeader_OnClick(object sender, RoutedEventArgs e)
         {
-            // Focus the keyboard navigation onto the floating panel and show it. 
-            KeyboardNavigation.SetTabNavigation(this.mainBodyGrid, ((MainViewModel)this.DataContext).IsPresetPaneDisplayed ? KeyboardNavigationMode.Continue : KeyboardNavigationMode.None);
+            // Collapsible preset section in the right-hand column: click to expand, click again to collapse.
             ((MainViewModel)this.DataContext).TogglePresetPane();
-        }
-
-        private void PresetsMenuButton_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // If we've clicked the dropdown part of the button, display the context menu below the button.
-            Button button = (sender as Button);
-            if (button != null)
-            {
-                button.ContextMenu.IsEnabled = true;
-                button.ContextMenu.PlacementTarget = button;
-                button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-                button.ContextMenu.IsOpen = true;
-                return;
-            }
         }
 
         private void TabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -97,34 +82,6 @@ namespace HandBrakeWPF.Views
                 }
 
                 this.tabControl.Focus();
-            }
-        }
-        
-        private void SelectPreset_OnClick(object sender, RoutedEventArgs e)
-        {
-            var button = sender as FrameworkElement;
-            if (button != null && button.ContextMenu != null)
-            {
-                button.ContextMenu.PlacementTarget = button;
-                button.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Right;
-                button.ContextMenu.IsOpen = true;
-            }
-        }
-        
-        private void ParentGrid_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            bool isPresetPaneDisplayed = ((MainViewModel)this.DataContext).IsPresetPaneDisplayed;
-
-            if (isPresetPaneDisplayed)
-            {
-                HitTestResult presetControlPressed = VisualTreeHelper.HitTest(presetPaneControl, e.GetPosition(presetPaneControl));
-                HitTestResult presetButtonPressed = VisualTreeHelper.HitTest(presetbtn, e.GetPosition(presetbtn));
-
-                if (presetButtonPressed == null && presetControlPressed == null)
-                {
-                    KeyboardNavigation.SetTabNavigation(this.mainBodyGrid, KeyboardNavigationMode.Continue);
-                    ((MainViewModel)this.DataContext).TogglePresetPane(); // Clicked off the preset control
-                }
             }
         }
 
@@ -166,24 +123,6 @@ namespace HandBrakeWPF.Views
             {
                 this.OpenButtonMenu(sender as Button);
                 e.Handled = true;
-            }
-        }
-
-        private void Presetbtn_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space || e.Key == Key.Enter)
-            {
-                // Focus the keyboard navigation onto the floating panel and show it. 
-                KeyboardNavigation.SetTabNavigation(this.mainBodyGrid, ((MainViewModel)this.DataContext).IsPresetPaneDisplayed ? KeyboardNavigationMode.Continue : KeyboardNavigationMode.None);
-                ((MainViewModel)this.DataContext).TogglePresetPane();
-            }
-        }
-
-        private void PresetOverlayBtn_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space || e.Key == Key.Enter)
-            {
-                PresetsMenuButton_PreviewMouseDown(sender, null);
             }
         }
 

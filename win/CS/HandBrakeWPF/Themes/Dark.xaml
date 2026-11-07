@@ -2,38 +2,39 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--
-        #2B2D30 - Dark
-        #33363A - Mid
-        #3D4146 - Light
-        #4A4F55 - Ultralight
+        WsQ palette (aligned with Themes/WsqDark.xaml)
+        #17181C - Dark (cards, lists)
+        #141518 - Mid (bars, tab content)
+        #24262C - Light (inputs)
+        #2C2F36 - Ultralight
     -->
 
-    <SolidColorBrush x:Key="Ui.Dark" Color="#2B2D30" />
-    <SolidColorBrush x:Key="Ui.Mid" Color="#33363A" />
-    <SolidColorBrush x:Key="Ui.Light" Color="#3D4146" />
-    <SolidColorBrush x:Key="Ui.Light2" Color="#3D4146" />
-    <SolidColorBrush x:Key="Ui.Ultralight" Color="#4A4F55" />
+    <SolidColorBrush x:Key="Ui.Dark" Color="#17181C" />
+    <SolidColorBrush x:Key="Ui.Mid" Color="#141518" />
+    <SolidColorBrush x:Key="Ui.Light" Color="#24262C" />
+    <SolidColorBrush x:Key="Ui.Light2" Color="#24262C" />
+    <SolidColorBrush x:Key="Ui.Ultralight" Color="#2C2F36" />
     <SolidColorBrush x:Key="Ui.UltraLight2" Color="#acacac" />
     <SolidColorBrush x:Key="Ui.UltraLight3" Color="#E3E3E3" />
     <SolidColorBrush x:Key="Ui.ContrastLight" Color="#C0C0C0" />
-    <SolidColorBrush x:Key="Ui.ControlHover" Color="#50565D" />
+    <SolidColorBrush x:Key="Ui.ControlHover" Color="#33363E" />
     <SolidColorBrush x:Key="Ui.WhiteSmoke" Color="#E6E8EB" />
-    <SolidColorBrush x:Key="Ui.ListBoxSelect" Color="#606060" />
-    <SolidColorBrush x:Key="Ui.ToolbarHover" Color="#50565D" />
+    <SolidColorBrush x:Key="Ui.ListBoxSelect" Color="#33363E" />
+    <SolidColorBrush x:Key="Ui.ToolbarHover" Color="#2A2C33" />
 
     <SolidColorBrush x:Key="Ui.Blue" Color="#00579f" />
     <SolidColorBrush x:Key="Ui.BlueBright" Color="#006cc5" />
 
-    <SolidColorBrush x:Key="Ui.Background" Color="#3D4146" />
+    <SolidColorBrush x:Key="Ui.Background" Color="#17181C" />
     <SolidColorBrush x:Key="Ui.BackgroundLight" Color="#C0C0C0" />
     <SolidColorBrush x:Key="Ui.BackgroundDark" Color="Black" />
 
 
     <!-- General -->
-    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#2B2D30" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#0F1012" />
     <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#E6E8EB" />
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#E6E8EB" />
-    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#4089C4" />
+    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#7A5A1E" />
     <SolidColorBrush x:Key="{x:Static SystemColors.MenuTextBrushKey}" Color="#E6E8EB" />
     <SolidColorBrush x:Key="{x:Static SystemColors.ControlDarkBrushKey}" Color="#E6E8EB" />
 
