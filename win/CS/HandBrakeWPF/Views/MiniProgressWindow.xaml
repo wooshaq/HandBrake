@@ -1,0 +1,50 @@
+<Window x:Class="HandBrakeWPF.Views.MiniProgressWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Properties="clr-namespace:HandBrakeWPF.Properties"
+        Title="HandBrake"
+        Width="112" Height="112"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Topmost="True"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        TextOptions.TextFormattingMode="Display"
+        MouseLeftButtonDown="Window_OnMouseLeftButtonDown">
+
+    <!-- WsQ mini progress indicator (variant B): 270° gauge, percent + time left in the middle, fps in the gap. -->
+    <Grid Width="96" Height="96" ToolTip="{Binding ElementName=statusTip, Path=Text}">
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem x:Name="showMainMenuItem" Header="{x:Static Properties:Resources.MiniProgress_ShowMain}" Click="ShowMain_OnClick" />
+                <Separator />
+                <MenuItem x:Name="hideMenuItem" Header="{x:Static Properties:Resources.MiniProgress_Hide}" Click="Hide_OnClick" />
+            </ContextMenu>
+        </Grid.ContextMenu>
+
+        <Ellipse Fill="{DynamicResource Wsq.Card}" Stroke="{DynamicResource Wsq.CardBorder}" StrokeThickness="1">
+            <Ellipse.Effect>
+                <DropShadowEffect BlurRadius="14" ShadowDepth="3" Opacity="0.5" Color="Black" />
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <Path x:Name="trackArc" Stroke="{DynamicResource Wsq.Input}" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+        <Path x:Name="progressArc" Stroke="{DynamicResource Wsq.Accent}" StrokeThickness="5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8">
+            <TextBlock x:Name="percentText" Text="0%" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center"
+                       Foreground="{DynamicResource Wsq.Text}" />
+            <TextBlock x:Name="etaText" Text="" FontFamily="Consolas" FontSize="10" HorizontalAlignment="Center" Margin="0,1,0,0"
+                       Foreground="{DynamicResource Wsq.Muted}" />
+        </StackPanel>
+
+        <TextBlock x:Name="fpsText" Text="" FontFamily="Consolas" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,7"
+                   Foreground="{DynamicResource Wsq.Accent}" />
+
+        <TextBlock x:Name="statusTip" Visibility="Collapsed" />
+    </Grid>
+</Window>

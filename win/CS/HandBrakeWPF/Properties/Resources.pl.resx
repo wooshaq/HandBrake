@@ -1011,6 +1011,12 @@ Wskazówka: Nadpisywanie plików można kontrolować w preferencjach. </value>
   <data name="MainView_OutputSettings" xml:space="preserve">
     <value>Ustawienia wyjściowe</value>
   </data>
+  <data name="MiniProgress_Hide" xml:space="preserve">
+    <value>Ukryj wskaźnik postępu</value>
+  </data>
+  <data name="MiniProgress_ShowMain" xml:space="preserve">
+    <value>Pokaż HandBrake</value>
+  </data>
   <data name="MainView_Pause" xml:space="preserve">
     <value>Pause</value>
   </data>

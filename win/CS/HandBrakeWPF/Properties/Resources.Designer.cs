@@ -3160,6 +3160,24 @@ namespace HandBrakeWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide progress indicator.
+        /// </summary>
+        public static string MiniProgress_Hide {
+            get {
+                return ResourceManager.GetString("MiniProgress_Hide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show HandBrake.
+        /// </summary>
+        public static string MiniProgress_ShowMain {
+            get {
+                return ResourceManager.GetString("MiniProgress_ShowMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string MainView_Pause {

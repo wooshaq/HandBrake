@@ -93,6 +93,8 @@ namespace HandBrakeWPF.Services.Queue.Model
         public TimeSpan? EstimatedTimeLeft => this.progressEventArgs?.EstimatedTimeLeft ?? null;
 
         public double AverageFrameRate { get; private set; }
+
+        public double CurrentFrameRate => this.progressEventArgs?.CurrentFrameRate ?? 0;
         
         public void Update(EncodeProgressEventArgs e)
         {

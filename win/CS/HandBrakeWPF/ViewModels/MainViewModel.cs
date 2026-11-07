@@ -2442,6 +2442,7 @@ namespace HandBrakeWPF.ViewModels
                     this.WindowTitle = Resources.HandBrake_Title;
                     this.notifyIconService.SetTooltip(this.WindowTitle);
                     this.windowsTaskbar.SetNoProgress();
+                    MiniProgressController.Close(true);
                 });
         }
 
@@ -2480,6 +2481,7 @@ namespace HandBrakeWPF.ViewModels
                     this.NotifyOfPropertyChange(() => this.IsEncoding);
 
                     this.windowsTaskbar.SetPaused();
+                    MiniProgressController.SetPaused();
                 });
         }
         
@@ -2501,6 +2503,7 @@ namespace HandBrakeWPF.ViewModels
                     this.IsMultiProcess = false;
                     this.NotifyOfPropertyChange(() => this.IsMultiProcess);
                     this.windowsTaskbar.SetNoProgress();
+                    MiniProgressController.Close(false);
                 }
             });
 
@@ -2529,6 +2532,8 @@ namespace HandBrakeWPF.ViewModels
                         this.ProgressPercentage = percent;
                         this.NotifyOfPropertyChange(() => this.ProgressPercentage);
 
+                        MiniProgressController.Update(status.ProgressValue, status.CurrentFrameRate, status.EstimatedTimeLeft, false);
+
                         if (this.userSettingService.GetUserSetting<bool>(UserSettingConstants.ShowStatusInTitleBar))
                         {
                             this.WindowTitle = string.Format(Resources.WindowTitleStatus, Resources.HandBrake_Title, String.Format("{0:##0.0}", Math.Round(status.ProgressValue, 1)), status.Task, status.TaskCount);
@@ -2549,6 +2554,7 @@ namespace HandBrakeWPF.ViewModels
                         this.notifyIconService.SetTooltip(string.Format(Resources.TaskTrayStatusManyTitle, Resources.HandBrake_Title, queueJobStatuses.Count));
                         this.IsMultiProcess = true;
                         this.NotifyOfPropertyChange(() => this.IsMultiProcess);
+                        MiniProgressController.Close(false);
                     }
                 }
                 );
