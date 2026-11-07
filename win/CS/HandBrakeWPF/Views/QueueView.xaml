@@ -105,6 +105,52 @@
             <TextBlock Text="{Binding JobsPending}"  Grid.Column="1" Foreground="{DynamicResource Wsq.Muted}" Margin="15,0,0,5 " VerticalAlignment="Bottom" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" />
         </Grid>
 
+        <!-- WsQ: current job card -->
+        <Border Grid.Row="1" Margin="16,12,16,0" Padding="20,16" CornerRadius="16" Background="{DynamicResource Wsq.Card}"
+                BorderBrush="{DynamicResource Wsq.CardBorder}" BorderThickness="1"
+                Visibility="{Binding IsCurrentJobVisible, Converter={StaticResource boolToVisConverter}}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Text="{Binding CurrentJob.JobProgress.ProgressPercentText}" FontFamily="Consolas" FontSize="44"
+                           Foreground="{DynamicResource Wsq.Text}" VerticalAlignment="Center" Margin="0,0,24,0" MinWidth="120" />
+
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="0,4,0,0">
+                    <TextBlock Text="{Binding CurrentJob.Task.Destination, Converter={StaticResource filePathToFilenameConverter}}" FontSize="16" FontWeight="SemiBold"
+                               Foreground="{DynamicResource Wsq.Text}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding CurrentJob.JobProgress.JobStatusShort}" Foreground="{DynamicResource Wsq.Muted}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <Grid Grid.Row="1" Grid.Column="1" Margin="0,10,0,0">
+                    <ProgressBar Height="8" Minimum="0" Maximum="100" Value="{Binding CurrentJob.JobProgress.ProgressValue, Mode=OneWay}"
+                                 IsIndeterminate="{Binding CurrentJob.JobProgress.IntermediateProgress}" Foreground="{DynamicResource Wsq.Accent}" />
+                </Grid>
+
+                <UniformGrid Grid.Row="2" Grid.Column="1" Columns="3" Margin="0,12,0,0">
+                    <StackPanel>
+                        <TextBlock Text="FPS" Style="{StaticResource WsqLabel}" />
+                        <TextBlock Text="{Binding CurrentJob.JobProgress.FrameRateText}" FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource Wsq.Text}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{x:Static Properties:Resources.QueueView_WsqAvgFps}" Style="{StaticResource WsqLabel}" />
+                        <TextBlock Text="{Binding CurrentJob.JobProgress.AverageFrameRateText}" FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource Wsq.Text}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="{x:Static Properties:Resources.QueueView_WsqTimeLeft}" Style="{StaticResource WsqLabel}" />
+                        <TextBlock Text="{Binding CurrentJob.JobProgress.TimeLeftText}" FontFamily="Consolas" FontSize="14" Foreground="{DynamicResource Wsq.Text}" />
+                    </StackPanel>
+                </UniformGrid>
+            </Grid>
+        </Border>
+
         <Grid Grid.Row="2" Margin="0,12,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" x:Name="leftTabPanel" />
@@ -236,7 +282,7 @@
                     </Grid>
                 </Border>
 
-                <ListBox Tag="{Binding}" x:Name="queueJobs" Grid.Row="2" Margin="16,0,8,0" Background="Transparent" BorderThickness="0"
+                <ListBox Tag="{Binding}" x:Name="queueJobs" Grid.Row="2" Margin="16,0,8,0" Background="Transparent" BorderThickness="0" FocusVisualStyle="{x:Null}"
                              dd:DragDrop.DropHandler="{Binding}"
                              dd:DragDrop.IsDragSource="True"
                              dd:DragDrop.IsDropTarget="True"

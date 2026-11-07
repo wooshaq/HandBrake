@@ -83,6 +83,7 @@ namespace HandBrakeWPF.Services.Queue.Model
 
                 this.progressValue = value;
                 this.NotifyOfPropertyChange(() => this.ProgressValue);
+                this.NotifyOfPropertyChange(() => this.ProgressPercentText);
             }
         }
 
@@ -95,6 +96,33 @@ namespace HandBrakeWPF.Services.Queue.Model
         public double AverageFrameRate { get; private set; }
 
         public double CurrentFrameRate => this.progressEventArgs?.CurrentFrameRate ?? 0;
+
+        // WsQ: preformatted values for the queue window's "current job" card.
+        public string ProgressPercentText => string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:0}%", Math.Floor(this.ProgressValue));
+
+        public string FrameRateText => this.progressEventArgs != null && this.progressEventArgs.CurrentFrameRate > 0
+            ? string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:0.0} fps", this.progressEventArgs.CurrentFrameRate)
+            : "\u2014";
+
+        public string AverageFrameRateText => this.AverageFrameRate > 0
+            ? string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:0.0} fps", this.AverageFrameRate)
+            : "\u2014";
+
+        public string TimeLeftText
+        {
+            get
+            {
+                if (this.progressEventArgs == null)
+                {
+                    return "\u2014";
+                }
+
+                TimeSpan t = this.progressEventArgs.EstimatedTimeLeft;
+                return t.TotalHours >= 1
+                    ? string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0}:{1:00}:{2:00}", (int)t.TotalHours, t.Minutes, t.Seconds)
+                    : string.Format(System.Globalization.CultureInfo.InvariantCulture, "{0:00}:{1:00}", t.Minutes, t.Seconds);
+            }
+        }
         
         public void Update(EncodeProgressEventArgs e)
         {
@@ -102,6 +130,10 @@ namespace HandBrakeWPF.Services.Queue.Model
             { 
                 progressEventArgs = e;
                 this.IntermediateProgress = false;
+
+                this.NotifyOfPropertyChange(() => this.FrameRateText);
+                this.NotifyOfPropertyChange(() => this.AverageFrameRateText);
+                this.NotifyOfPropertyChange(() => this.TimeLeftText);
 
                 string totalHrsLeft = e.EstimatedTimeLeft.Days >= 1 ? string.Format(@"{0:d\:hh\:mm\:ss}", e.EstimatedTimeLeft) : string.Format(@"{0:hh\:mm\:ss}", e.EstimatedTimeLeft);
                 string elapsedTimeHrs = e.ElapsedTime.Days >= 1 ? string.Format(@"{0:d\:hh\:mm\:ss}", e.ElapsedTime) : string.Format(@"{0:hh\:mm\:ss}", e.ElapsedTime);

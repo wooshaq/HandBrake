@@ -7,18 +7,110 @@
     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
         <Style.Resources>
             <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="2" />
+                <Setter Property="CornerRadius" Value="8" />
             </Style>
         </Style.Resources>
-        <Setter Property="MinHeight" Value="23"/>
+        <Setter Property="MinHeight" Value="30"/>
         <Setter Property="Margin" Value="0,2,0,2" />
         <Setter Property="ToolTipService.ShowDuration" Value="20000" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
+    <!-- WsQ: flat slider with an accent-filled track and round thumb (horizontal only; vertical keeps the system look). -->
+    <Style x:Key="WsqSliderRepeatFill" TargetType="RepeatButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Grid Background="Transparent">
+                        <Border Height="4" CornerRadius="2" Background="{DynamicResource Wsq.Accent}" VerticalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="WsqSliderRepeatEmpty" TargetType="RepeatButton">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Grid Background="Transparent">
+                        <Border Height="4" CornerRadius="2" Background="{DynamicResource Wsq.Input}" VerticalAlignment="Center" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="WsqSliderThumb" TargetType="Thumb">
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Grid Width="18" Height="18" Background="Transparent">
+                        <Ellipse x:Name="knob" Fill="{DynamicResource Wsq.Text}" Stroke="{DynamicResource Wsq.Accent}" StrokeThickness="3" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="knob" Property="StrokeThickness" Value="4" />
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="knob" Property="Fill" Value="{DynamicResource Wsq.Accent}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type Slider}" BasedOn="{StaticResource {x:Type Slider}}">
         <Setter Property="ToolTipService.ShowDuration" Value="20000" />
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="MinHeight" Value="24" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Slider">
+                            <Grid x:Name="root" Background="Transparent" SnapsToDevicePixels="True">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="{TemplateBinding IsDirectionReversed}">
+                                    <Track.DecreaseRepeatButton>
+                                        <RepeatButton Style="{StaticResource WsqSliderRepeatFill}" Command="{x:Static Slider.DecreaseLarge}" />
+                                    </Track.DecreaseRepeatButton>
+                                    <Track.IncreaseRepeatButton>
+                                        <RepeatButton Style="{StaticResource WsqSliderRepeatEmpty}" Command="{x:Static Slider.IncreaseLarge}" />
+                                    </Track.IncreaseRepeatButton>
+                                    <Track.Thumb>
+                                        <Thumb Style="{StaticResource WsqSliderThumb}" />
+                                    </Track.Thumb>
+                                </Track>
+                                <TickBar x:Name="BottomTick" Grid.Row="1" Height="4" Margin="9,2,9,0" Placement="Bottom" Fill="{DynamicResource Wsq.Muted}" Visibility="Collapsed" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="TickPlacement" Value="BottomRight">
+                                    <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="TickPlacement" Value="Both">
+                                    <Setter TargetName="BottomTick" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="root" Property="Opacity" Value="0.45" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -28,22 +120,23 @@
     <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
         <Style.Resources>
             <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="2" />
+                <Setter Property="CornerRadius" Value="7" />
             </Style>
         </Style.Resources>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="MinHeight" Value="23"/>
+        <Setter Property="MinHeight" Value="30"/>
+        <Setter Property="Padding" Value="5,0"/>
     </Style>
 
     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Style.Resources>
             <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="2" />
+                <Setter Property="CornerRadius" Value="8" />
             </Style>
         </Style.Resources>
-        <Setter Property="MinHeight" Value="23"/>
+        <Setter Property="MinHeight" Value="30"/>
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Padding" Value="8,2" />
+        <Setter Property="Padding" Value="12,2" />
     </Style>
 
     <Style TargetType="{x:Type RadioButton}">
@@ -59,8 +152,8 @@
                                          StrokeThickness="1"
                                          Stroke="{DynamicResource Ui.ContrastLight}" />
                                 <Ellipse x:Name="CheckMark"
-                                         Margin="4"
-                                         Fill="{StaticResource Ui.BlueBright}" />
+                                         Margin="5"
+                                         Fill="{DynamicResource Wsq.Accent}" />
                             </Grid>
                         </BulletDecorator.Bullet>
                         <ContentPresenter 
@@ -72,6 +165,10 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="false">
                             <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter TargetName="Border" Property="Stroke" Value="{DynamicResource Wsq.Accent}" />
+                            <Setter TargetName="Border" Property="StrokeThickness" Value="2" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border" Property="Fill" Value="{StaticResource Ui.ToolbarHover}" />
@@ -121,7 +218,7 @@
     <Style TargetType="{x:Type CheckBox}">
         <Style.Resources>
             <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="2" />
+                <Setter Property="CornerRadius" Value="5" />
             </Style>
         </Style.Resources>
         <Setter Property="Margin" Value="0,2,0,2" />
@@ -135,7 +232,7 @@
                                     BorderThickness="1" BorderBrush="{DynamicResource Ui.ContrastLight}">
                                 <Grid>
                                     <Grid Background="{TemplateBinding Foreground}" Margin="1" Visibility="Collapsed" Name="nullBlock"/>
-                                    <Path Stretch="Uniform" Width="16" Height="11" Fill="{StaticResource Ui.BlueBright}" Name="CheckMark" 
+                                    <Path Stretch="Uniform" Width="12" Height="9" Fill="{DynamicResource Wsq.AccentText}" Name="CheckMark" 
                                           Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Visibility="Collapsed"/>
                                 </Grid>
                             </Border>
@@ -143,20 +240,23 @@
                         <ContentPresenter Margin="4,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" RecognizesAccessKey="True"/>
                     </BulletDecorator>
                     <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Ui.ToolbarHover}" />
+                        </Trigger>
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"></Setter>
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource Wsq.Accent}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource Wsq.Accent}" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="{x:Null}">
                             <Setter TargetName="nullBlock" Property="Visibility" Value="Visible"></Setter>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Ui.ToolbarHover}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" Value="LightGray" />
                             <Setter Property="Foreground" Value="Gray" />
                             <Setter Property="BorderBrush" Value="Gray"/>
                             <Setter TargetName="CheckMark" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="Border" Property="Opacity" Value="0.5" />
                         </Trigger>
 
                         <Trigger Property="IsPressed" Value="true">

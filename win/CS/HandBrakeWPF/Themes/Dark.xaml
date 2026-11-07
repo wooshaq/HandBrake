@@ -89,6 +89,7 @@
     <!-- Text Entry Controls -->
     <Style TargetType="TextBox"  BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Background" Value="{DynamicResource Ui.Light}" />
+        <Setter Property="BorderBrush" Value="#33363E" />
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu>

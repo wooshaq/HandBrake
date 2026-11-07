@@ -3178,6 +3178,24 @@ namespace HandBrakeWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average.
+        /// </summary>
+        public static string QueueView_WsqAvgFps {
+            get {
+                return ResourceManager.GetString("QueueView_WsqAvgFps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time left.
+        /// </summary>
+        public static string QueueView_WsqTimeLeft {
+            get {
+                return ResourceManager.GetString("QueueView_WsqTimeLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string MainView_Pause {

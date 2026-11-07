@@ -45,7 +45,7 @@
                     VerticalAlignment="Stretch"
                     Orientation="Vertical">
             <!--  Main Menu  -->
-            <Menu MinHeight="23" x:Name="mainAppMenu" Visibility="{Binding IsLegacyMenuShown, Converter={StaticResource boolToVisConverter}}"
+            <Menu MinHeight="26" x:Name="mainAppMenu" Background="{DynamicResource Wsq.Surface}" Padding="10,2,10,0" Visibility="{Binding IsLegacyMenuShown, Converter={StaticResource boolToVisConverter}}"
                   HorizontalAlignment="Stretch"
                   VerticalAlignment="Top">
                 <Menu.Resources>
@@ -377,7 +377,27 @@
             <!--  Source card  -->
             <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource WsqCard}"
                     IsEnabled="{Binding HasSource, Converter={StaticResource booleanConverter}, ConverterParameter=false}">
-                <StackPanel Orientation="Vertical">
+                <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Preview thumbnail (same frame as the Summary tab), click to open the preview window -->
+                <Border Grid.Column="0" Width="192" Height="108" CornerRadius="10" Margin="0,0,18,0" VerticalAlignment="Top" Cursor="Hand"
+                        Background="#0B0C0E" BorderBrush="{DynamicResource Wsq.CardBorder}" BorderThickness="1"
+                        ToolTip="{x:Static Properties:Resources.MainView_ShowPreview}">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding RelayCommand}" CommandParameter="OpenPreviewWindow" />
+                    </Border.InputBindings>
+                    <Border CornerRadius="9">
+                        <Border.Background>
+                            <ImageBrush ImageSource="{Binding SummaryViewModel.PreviewImage}" Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                </Border>
+
+                <StackPanel Grid.Column="1" Orientation="Vertical">
                     <TextBlock Text="{x:Static Properties:Resources.MainView_Source}" Style="{StaticResource WsqLabel}" />
                     <Grid Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
@@ -447,6 +467,7 @@
                         </StackPanel>
                     </WrapPanel>
                 </StackPanel>
+                </Grid>
             </Border>
 
             <!--  Tab Control  -->

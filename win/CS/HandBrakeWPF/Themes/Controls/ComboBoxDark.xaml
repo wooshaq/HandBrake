@@ -3,31 +3,31 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
 
-    <SolidColorBrush x:Key="ComboBox.Static.Background" Color="#3D4146" />
-    <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#4A4F55" />
-    <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="#2B2D30" />
-    <SolidColorBrush x:Key="ComboBox.Static.Editable.Border" Color="#4A4F55" />
+    <SolidColorBrush x:Key="ComboBox.Static.Background" Color="#24262C" />
+    <SolidColorBrush x:Key="ComboBox.Static.Border" Color="#33363E" />
+    <SolidColorBrush x:Key="ComboBox.Static.Editable.Background" Color="#1C1D21" />
+    <SolidColorBrush x:Key="ComboBox.Static.Editable.Border" Color="#33363E" />
     <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Background" Color="Transparent" />
     <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Border" Color="Transparent" />
     <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph" Color="#E6E8EB" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Background" Color="#474C52" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="#7EB4EA" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background" Color="#2B2D30" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border" Color="#7EB4EA" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Background" Color="#1D5791" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border" Color="#4B77A3" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Background" Color="#2A2C33" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="#5A4520" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background" Color="#1C1D21" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border" Color="#5A4520" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Background" Color="#2A2C33" />
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border" Color="#3A3D45" />
     <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="#E6E8EB" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Background" Color="#2164A8" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="#569DE5" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Background" Color="#2B2D30" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Border" Color="#569DE5" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Background" Color="#2164A8" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Border" Color="#569DE5" />
+    <SolidColorBrush x:Key="ComboBox.Pressed.Background" Color="#33363E" />
+    <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="#F5B64A" />
+    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Background" Color="#1C1D21" />
+    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Border" Color="#F5B64A" />
+    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Background" Color="#33363E" />
+    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Border" Color="#F5B64A" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Glyph" Color="#BFBFBF" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#2B2D30" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#4A4F55" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background" Color="#2B2D30" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border" Color="#4A4F55" />
+    <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="#1C1D21" />
+    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="#33363E" />
+    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background" Color="#1C1D21" />
+    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border" Color="#33363E" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Background" Color="Transparent" />
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border" Color="Transparent" />
     <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="#B7B7B7" />
@@ -42,7 +42,7 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
 					<Border
 						x:Name="templateRoot"
-						CornerRadius="2"
+						CornerRadius="8"
 						Background="{DynamicResource ComboBox.Static.Background}"
 						BorderBrush="{DynamicResource ComboBox.Static.Border}"
 						BorderThickness="{TemplateBinding BorderThickness}"
@@ -51,7 +51,7 @@
 							x:Name="splitBorder"
 							Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}"
 							Margin="0"
-							CornerRadius="0,2,2,0"
+							CornerRadius="0,8,8,0"
 							HorizontalAlignment="Right"
 							BorderBrush="Transparent"
 							BorderThickness="1"
@@ -171,7 +171,7 @@
 					Color="Transparent">
 					<Border
 						x:Name="dropDownBorder"
-						CornerRadius="4"
+						CornerRadius="8"
 						Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
 						BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
 						BorderThickness="1">

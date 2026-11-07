@@ -1016,6 +1016,12 @@ Hint: File overwrite behaviour can be controlled in preferences. </value>
   <data name="MiniProgress_ShowMain" xml:space="preserve">
     <value>Show HandBrake</value>
   </data>
+  <data name="QueueView_WsqAvgFps" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="QueueView_WsqTimeLeft" xml:space="preserve">
+    <value>Time left</value>
+  </data>
   <data name="MainView_Pause" xml:space="preserve">
     <value>Pause</value>
   </data>

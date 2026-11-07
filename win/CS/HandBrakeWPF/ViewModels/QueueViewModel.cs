@@ -100,6 +100,20 @@ namespace HandBrakeWPF.ViewModels
             }
         }
 
+        // WsQ: the job that is encoding right now, shown as a big card at the top of the queue window.
+        public QueueTask CurrentJob => this.QueueTasks.FirstOrDefault(t => t.Status == QueueItemStatus.InProgress);
+
+        public bool IsCurrentJobVisible => this.CurrentJob != null;
+
+        public bool IsQueueEmpty => this.QueueTasks.Count == 0;
+
+        private void NotifyCurrentJob()
+        {
+            this.NotifyOfPropertyChange(() => this.CurrentJob);
+            this.NotifyOfPropertyChange(() => this.IsCurrentJobVisible);
+            this.NotifyOfPropertyChange(() => this.IsQueueEmpty);
+        }
+
         public string JobsPending
         {
             get => this.jobsPending;
@@ -862,6 +876,7 @@ namespace HandBrakeWPF.ViewModels
         
         private void QueueManager_QueueChanged(object sender, EventArgs e)
         {
+            ThreadHelper.OnUIThread(this.NotifyCurrentJob);
             this.JobsPending = string.Format(Resources.QueueViewModel_JobsPending, this.queueProcessor.Count);
 
             if (!queueProcessor.IsProcessing)
@@ -886,6 +901,7 @@ namespace HandBrakeWPF.ViewModels
 
         private void QueueProcessor_QueueCompleted(object sender, EventArgs e)
         {
+            ThreadHelper.OnUIThread(this.NotifyCurrentJob);
             this.JobsPending = string.Format(Resources.QueueViewModel_JobsPending, this.queueProcessor.Count);
             this.IsQueueRunning = false;
             this.NotifyOfPropertyChange(() => this.SelectedTask);
@@ -896,12 +912,14 @@ namespace HandBrakeWPF.ViewModels
 
         private void QueueProcessorJobProcessingStarted(object sender, QueueProgressEventArgs e)
         {
+            ThreadHelper.OnUIThread(this.NotifyCurrentJob);
             this.JobsPending = string.Format(Resources.QueueViewModel_JobsPending, this.queueProcessor.Count);
             this.IsQueueRunning = this.queueProcessor.IsProcessing;
         }
 
         private void QueueProcessor_QueuePaused(object sender, EventArgs e)
         {
+            ThreadHelper.OnUIThread(this.NotifyCurrentJob);
             this.JobsPending = string.Format(Resources.QueueViewModel_JobsPending, this.queueProcessor.Count);
             this.IsQueueRunning = false;
         }
