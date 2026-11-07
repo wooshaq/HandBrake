@@ -4,6 +4,8 @@
         xmlns:Properties="clr-namespace:HandBrakeWPF.Properties"
         Title="HandBrake"
         Width="112" Height="112"
+        PreviewMouseWheel="Window_OnPreviewMouseWheel"
+        LocationChanged="Window_OnLocationChanged"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -16,8 +18,12 @@
         TextOptions.TextFormattingMode="Display"
         MouseLeftButtonDown="Window_OnMouseLeftButtonDown">
 
-    <!-- WsQ mini progress indicator (variant B): 270° gauge, percent + time left in the middle, fps in the gap. -->
-    <Grid Width="96" Height="96" ToolTip="{Binding ElementName=statusTip, Path=Text}">
+    <!-- WsQ mini progress indicator (variant B): 270° gauge, percent + time left in the middle, fps in the gap.
+         Shift + mouse wheel scales it; position and scale are remembered. -->
+    <Grid x:Name="root" Width="96" Height="96" HorizontalAlignment="Center" VerticalAlignment="Center" ToolTip="{Binding ElementName=statusTip, Path=Text}">
+        <Grid.LayoutTransform>
+            <ScaleTransform x:Name="scaleTransform" ScaleX="1" ScaleY="1" />
+        </Grid.LayoutTransform>
         <Grid.ContextMenu>
             <ContextMenu>
                 <MenuItem x:Name="showMainMenuItem" Header="{x:Static Properties:Resources.MiniProgress_ShowMain}" Click="ShowMain_OnClick" />

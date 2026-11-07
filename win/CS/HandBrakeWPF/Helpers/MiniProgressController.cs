@@ -13,13 +13,19 @@ namespace HandBrakeWPF.Helpers
     using System;
     using System.Windows;
 
+    using HandBrakeWPF.Services.Interfaces;
     using HandBrakeWPF.Views;
 
     public static class MiniProgressController
     {
+        // Stored in HandBrake's settings.json so the circle keeps its place and size between runs.
+        private const string SettingHasPosition = "WsqMiniProgressHasPosition";
+        private const string SettingLeft = "WsqMiniProgressLeft";
+        private const string SettingTop = "WsqMiniProgressTop";
+        private const string SettingScale = "WsqMiniProgressScale";
+
         private static MiniProgressWindow window;
         private static bool hiddenByUser;
-        private static Point? lastPosition;
 
         public static void Update(double percent, double fps, TimeSpan? timeLeft, bool paused)
         {
@@ -31,9 +37,7 @@ namespace HandBrakeWPF.Helpers
             if (window == null)
             {
                 window = new MiniProgressWindow();
-                Point position = lastPosition ?? DefaultPosition();
-                window.Left = position.X;
-                window.Top = position.Y;
+                LoadPlacement(window);
             }
 
             window.SetProgress(percent, fps, timeLeft, paused);
@@ -92,15 +96,63 @@ namespace HandBrakeWPF.Helpers
                 return;
             }
 
-            lastPosition = new Point(window.Left, window.Top);
             window.Close();
             window = null;
         }
 
-        private static Point DefaultPosition()
+        public static void SavePlacement(double left, double top, double scale)
         {
+            IUserSettingService settings = GetSettings();
+            if (settings == null || double.IsNaN(left) || double.IsNaN(top))
+            {
+                return;
+            }
+
+            settings.SetUserSetting(SettingLeft, left);
+            settings.SetUserSetting(SettingTop, top);
+            settings.SetUserSetting(SettingScale, scale);
+            settings.SetUserSetting(SettingHasPosition, true);
+        }
+
+        private static void LoadPlacement(MiniProgressWindow w)
+        {
+            IUserSettingService settings = GetSettings();
+
+            double scale = settings?.GetUserSetting<double>(SettingScale) ?? 0;
+            w.ApplyScale(scale > 0 ? scale : 1.0);
+
             Rect area = SystemParameters.WorkArea;
-            return new Point(area.Right - 112 - 16, area.Bottom - 112 - 16);
+            double left = area.Right - w.Width - 16;
+            double top = area.Bottom - w.Height - 16;
+
+            if (settings != null && settings.GetUserSetting<bool>(SettingHasPosition))
+            {
+                left = settings.GetUserSetting<double>(SettingLeft);
+                top = settings.GetUserSetting<double>(SettingTop);
+
+                // Keep it reachable if the monitor layout changed since last time.
+                double vLeft = SystemParameters.VirtualScreenLeft;
+                double vTop = SystemParameters.VirtualScreenTop;
+                double vRight = vLeft + SystemParameters.VirtualScreenWidth;
+                double vBottom = vTop + SystemParameters.VirtualScreenHeight;
+                left = Math.Max(vLeft, Math.Min(left, vRight - w.Width));
+                top = Math.Max(vTop, Math.Min(top, vBottom - w.Height));
+            }
+
+            w.Left = left;
+            w.Top = top;
+        }
+
+        private static IUserSettingService GetSettings()
+        {
+            try
+            {
+                return IoCHelper.Get<IUserSettingService>();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
