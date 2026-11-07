@@ -1,6 +1,11 @@
 name: macOS build
 
-on: [push, pull_request]
+on:
+  push:
+    # WsQ fork: UI branches are Windows-only, skip Linux/macOS builds there.
+    branches-ignore:
+      - 'wsq/**'
+  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
