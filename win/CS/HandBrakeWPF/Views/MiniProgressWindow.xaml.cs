@@ -3,7 +3,7 @@
 //   This file is part of the HandBrake source code - It may be used under the terms of the GNU General Public License.
 // </copyright>
 // <summary>
-//   WsQ: small always-on-top circular encode progress indicator.
+//   WsQ: small floating circular encode progress indicator (optionally always on top).
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -61,6 +61,12 @@ namespace HandBrakeWPF.Views
 
         public double Scale => this.scale;
 
+        public void ApplyTopmost(bool topmost)
+        {
+            this.Topmost = topmost;
+            this.topmostMenuItem.IsChecked = topmost;
+        }
+
         public void ApplyScale(double newScale)
         {
             this.scale = Math.Max(MinScale, Math.Min(MaxScale, newScale));
@@ -94,6 +100,8 @@ namespace HandBrakeWPF.Views
                 this.progressArc.Opacity = 1;
             }
 
+            this.SetBadgeState(paused);
+
             this.statusTip.Text = string.Format(CultureInfo.CurrentCulture, "{0:0.0}%  {1}  {2}", percent, this.fpsText.Text, this.etaText.Text).Trim();
         }
 
@@ -101,6 +109,16 @@ namespace HandBrakeWPF.Views
         {
             this.fpsText.Text = Properties.Resources.MainView_Pause;
             this.progressArc.Opacity = 0.45;
+            this.SetBadgeState(true);
+        }
+
+        /// <summary>
+        /// Paused -> the badge shows "play" (resume); encoding -> it shows "pause".
+        /// </summary>
+        private void SetBadgeState(bool paused)
+        {
+            this.playIcon.Visibility = paused ? Visibility.Visible : Visibility.Collapsed;
+            this.pauseIcon.Visibility = paused ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private static string FormatTime(TimeSpan t)
@@ -140,7 +158,8 @@ namespace HandBrakeWPF.Views
         {
             if (e.ClickCount == 2)
             {
-                MiniProgressController.ShowMainWindow();
+                MiniProgressController.TogglePause();
+                e.Handled = true;
                 return;
             }
 
@@ -192,6 +211,28 @@ namespace HandBrakeWPF.Views
         private void ShowMain_OnClick(object sender, RoutedEventArgs e)
         {
             MiniProgressController.ShowMainWindow();
+        }
+
+        private void PlayBadge_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Swallow the click so it doesn't start a window drag; a double-click on the badge counts as one toggle.
+            e.Handled = true;
+            if (e.ClickCount == 1)
+            {
+                MiniProgressController.TogglePause();
+            }
+        }
+
+        private void PauseResume_OnClick(object sender, RoutedEventArgs e)
+        {
+            MiniProgressController.TogglePause();
+        }
+
+        private void Topmost_OnClick(object sender, RoutedEventArgs e)
+        {
+            bool topmost = this.topmostMenuItem.IsChecked;
+            this.Topmost = topmost;
+            MiniProgressController.SaveTopmost(topmost);
         }
 
         private void Hide_OnClick(object sender, RoutedEventArgs e)

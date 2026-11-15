@@ -159,6 +159,7 @@ namespace HandBrakeWPF.ViewModels
             this.queueProcessor.QueueCompleted += this.QueueCompleted;
             this.queueProcessor.QueueChanged += this.QueueChanged;
             this.queueProcessor.QueuePaused += this.QueueProcessor_QueuePaused;
+            MiniProgressController.TogglePauseHandler = this.ToggleEncodePause;
             this.queueProcessor.QueueJobStatusChanged += this.QueueProcessor_QueueJobStatusChanged;
             this.userSettingService.SettingChanged += this.UserSettingServiceSettingChanged;
 
@@ -230,7 +231,7 @@ namespace HandBrakeWPF.ViewModels
 
         public ISummaryViewModel SummaryViewModel { get; set; }
 
-        public int SelectedTab { get; set; }
+        public int SelectedTab { get; set; } = 3; // WsQ: always start on the Video tab.
 
         /* Commands */
         public ICommand AddToQueueQualitySweepCommand => new AddToQueueQualitySweepCommand(this, this.VideoViewModel, this.userSettingService, this.errorService);
@@ -1431,6 +1432,21 @@ namespace HandBrakeWPF.ViewModels
 
             this.queueProcessor.Pause(true);
             this.NotifyOfPropertyChange(() => this.IsEncoding);
+        }
+
+        /// <summary>
+        /// WsQ: used by the floating progress circle (double-click / play badge).
+        /// </summary>
+        public void ToggleEncodePause()
+        {
+            if (this.queueProcessor.IsEncoding && !this.queueProcessor.IsPaused)
+            {
+                this.PauseEncode();
+            }
+            else
+            {
+                this.StartEncode(); // Resumes a paused queue or starts encoding.
+            }
         }
 
         public void StopEncode()

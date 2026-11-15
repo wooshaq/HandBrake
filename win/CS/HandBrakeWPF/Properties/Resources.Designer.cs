@@ -3176,6 +3176,24 @@ namespace HandBrakeWPF.Properties {
                 return ResourceManager.GetString("MiniProgress_ShowMain", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Always on top.
+        /// </summary>
+        public static string MiniProgress_Topmost {
+            get {
+                return ResourceManager.GetString("MiniProgress_Topmost", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Pause / resume encoding.
+        /// </summary>
+        public static string MiniProgress_PauseResume {
+            get {
+                return ResourceManager.GetString("MiniProgress_PauseResume", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Average.

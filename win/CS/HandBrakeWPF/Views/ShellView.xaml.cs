@@ -13,9 +13,12 @@ namespace HandBrakeWPF.Views
     using System.ComponentModel;
     using System.Drawing;
     using System.IO;
+    using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Interop;
+    using System.Windows.Media;
     using System.Windows.Resources;
 
     using HandBrakeWPF.Commands;
@@ -34,12 +37,62 @@ namespace HandBrakeWPF.Views
     /// </summary>
     public partial class ShellView : Window
     {
+        private const int DwmwaCloak = 13;
+
         private INotifyIconService notifyIconService;
+        private bool isCloaked;
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
             WindowHelper.SetDarkMode(this);
+
+            // WsQ: no bright flash on startup. Paint the native surface with the theme background instead of the
+            // default white, and keep the window cloaked (invisible but "shown") until WPF has rendered the first frame.
+            IntPtr handle = new WindowInteropHelper(this).Handle;
+            HwndSource source = HwndSource.FromHwnd(handle);
+            if (source?.CompositionTarget != null && this.Background is SolidColorBrush brush)
+            {
+                source.CompositionTarget.BackgroundColor = brush.Color;
+            }
+
+            try
+            {
+                int cloak = 1;
+                this.isCloaked = DwmSetWindowAttribute(handle, DwmwaCloak, ref cloak, sizeof(int)) == 0;
+            }
+            catch (Exception)
+            {
+                this.isCloaked = false;
+            }
+
+            if (this.isCloaked)
+            {
+                this.ContentRendered += this.ShellView_ContentRendered;
+            }
+        }
+
+        private void ShellView_ContentRendered(object sender, EventArgs e)
+        {
+            this.ContentRendered -= this.ShellView_ContentRendered;
+
+            // Wait for the first full layout + render pass of the main view before revealing the window.
+            this.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    if (!this.isCloaked)
+                    {
+                        return;
+                    }
+
+                    this.isCloaked = false;
+                    int cloak = 0;
+                    DwmSetWindowAttribute(new WindowInteropHelper(this).Handle, DwmwaCloak, ref cloak, sizeof(int));
+                }),
+                System.Windows.Threading.DispatcherPriority.ApplicationIdle);
         }
 
         /// <summary>

@@ -23,9 +23,25 @@ namespace HandBrakeWPF.Helpers
         private const string SettingLeft = "WsqMiniProgressLeft";
         private const string SettingTop = "WsqMiniProgressTop";
         private const string SettingScale = "WsqMiniProgressScale";
+        private const string SettingNotTopmost = "WsqMiniProgressNotTopmost"; // default (missing) = always on top
 
         private static MiniProgressWindow window;
         private static bool hiddenByUser;
+
+        /// <summary>
+        /// Set by the main view model: pauses a running encode, or starts / resumes it.
+        /// </summary>
+        public static Action TogglePauseHandler { get; set; }
+
+        public static void TogglePause()
+        {
+            TogglePauseHandler?.Invoke();
+        }
+
+        public static void SaveTopmost(bool topmost)
+        {
+            GetSettings()?.SetUserSetting(SettingNotTopmost, !topmost);
+        }
 
         public static void Update(double percent, double fps, TimeSpan? timeLeft, bool paused)
         {
@@ -120,6 +136,7 @@ namespace HandBrakeWPF.Helpers
 
             double scale = settings?.GetUserSetting<double>(SettingScale) ?? 0;
             w.ApplyScale(scale > 0 ? scale : 1.0);
+            w.ApplyTopmost(!(settings?.GetUserSetting<bool>(SettingNotTopmost) ?? false));
 
             Rect area = SystemParameters.WorkArea;
             double left = area.Right - w.Width - 16;
