@@ -1,0 +1,40 @@
+# WsQ: start the Windows Build for every new commit on wsq/* branches.
+# Pushes made by automated tokens don't trigger workflows on their own, so this
+# scheduled job looks for wsq/* heads without a Windows Build run and starts one
+# (workflow_dispatch from GITHUB_TOKEN is allowed to start workflows).
+name: WsQ auto build
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: wsq-autobuild
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Dispatch Windows Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start builds for unbuilt wsq/* commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for br in $(gh api "repos/$REPO/branches?per_page=100" --paginate --jq '.[].name | select(startswith("wsq/"))'); do
+            sha=$(gh api "repos/$REPO/commits/$br" --jq .sha)
+            count=$(gh api "repos/$REPO/actions/workflows/windows.yml/runs?head_sha=$sha&per_page=1" --jq .total_count)
+            if [ "$count" = "0" ]; then
+              echo "Starting Windows Build for $br @ ${sha:0:7}"
+              gh workflow run windows.yml -R "$REPO" --ref "$br"
+            else
+              echo "$br @ ${sha:0:7}: already has a Windows Build run"
+            fi
+          done
