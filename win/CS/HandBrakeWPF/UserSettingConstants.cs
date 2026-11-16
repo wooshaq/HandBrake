@@ -63,6 +63,7 @@ namespace HandBrakeWPF
         public const string PlaySoundWhenDone = "PlaySoundWhenDone";
         public const string PlaySoundWhenQueueDone = "PlaySoundWhenQueueDone";
         public const string WhenDoneAudioFile = "WhenDoneAudioFile";
+        public const string WsqShutdownArguments = "WsqShutdownArguments";
         public const string ProcessIsolationEnabled = "ProcessIsolationEnabled";
         public const string ProcessIsolationPort = "ProcessIsolationPort";
         public const string EnableQuickSyncHyperEncode = "EnableQuickSyncHyperEncode_Deprecated";

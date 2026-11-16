@@ -1166,6 +1166,15 @@ Hint: File overwrite behaviour can be controlled in preferences. </value>
   <data name="Options_Arguments" xml:space="preserve">
     <value>Arguments:</value>
   </data>
+  <data name="OptionsView_ShutdownArguments" xml:space="preserve">
+    <value>shutdown.exe:</value>
+  </data>
+  <data name="OptionsView_ShutdownDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="OptionsView_ShutdownArgumentsHint" xml:space="preserve">
+    <value>Arguments for shutdown.exe used by the "Shutdown" action. Default: -s -t 60 (shut down after 60 s). Examples: -s -t 0 (immediately), -s -f -t 0 (force close apps), -r -t 60 (restart), -h (hibernate).</value>
+  </data>
   <data name="Options_AutomaticFileNaming" xml:space="preserve">
     <value>Automatic File Naming</value>
   </data>

@@ -190,7 +190,15 @@ namespace HandBrakeWPF.Services
                 switch ((WhenDone)this.userSettingService.GetUserSetting<int>(UserSettingConstants.WhenCompleteAction))
                 {
                     case WhenDone.Shutdown:
-                        ProcessStartInfo shutdown = new ProcessStartInfo("Shutdown", "-s -t 60");
+                        // WsQ: shutdown.exe arguments are configurable (Options -> When Done).
+                        string shutdownArgs = this.userSettingService.GetUserSetting<string>(UserSettingConstants.WsqShutdownArguments);
+                        if (string.IsNullOrWhiteSpace(shutdownArgs))
+                        {
+                            shutdownArgs = "-s -t 60";
+                        }
+
+                        this.ServiceLogMessage("Running: shutdown " + shutdownArgs);
+                        ProcessStartInfo shutdown = new ProcessStartInfo("Shutdown", shutdownArgs.Trim());
                         shutdown.UseShellExecute = false;
                         Process.Start(shutdown);
                         ThreadHelper.OnUIThread(() => System.Windows.Application.Current.Shutdown());

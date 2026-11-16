@@ -738,6 +738,38 @@
                     </MenuItem>
                 </Menu>
             </StatusBarItem>
+
+            <!-- WsQ: quick start button (rounded square with play) in the bottom-right corner; shows pause while encoding. -->
+            <StatusBarItem HorizontalAlignment="Right" Margin="6,0,0,0">
+                <Grid>
+                    <Button x:Name="statusStart" Style="{StaticResource WsqPrimaryButton}" Width="30" Height="30" MinHeight="0" Padding="0"
+                            Command="{Binding RelayCommand}" CommandParameter="StartEncode"
+                            AutomationProperties.Name="{x:Static Properties:Resources.MainView_StartEncode}"
+                            Visibility="{Binding IsEncoding, Converter={StaticResource boolToVisConverter}, ConverterParameter=true}">
+                        <Button.ToolTip>
+                            <TextBlock>
+                                <Run Text="{Binding StartLabel, Mode=OneWay, FallbackValue='{x:Static Properties:Resources.MainView_StartEncode}'}"/>
+                                <LineBreak/>
+                                <Run Text="Ctrl + E" FontStyle="Italic"/>
+                            </TextBlock>
+                        </Button.ToolTip>
+                        <Path Data="M 0,0 L 9,5.5 L 0,11 Z" Fill="{DynamicResource Wsq.AccentText}" Margin="2,0,0,0" />
+                    </Button>
+                    <Button x:Name="statusPause" Style="{StaticResource WsqButton}" Width="30" Height="30" MinHeight="0" Padding="0"
+                            Command="{Binding RelayCommand}" CommandParameter="PauseEncode"
+                            AutomationProperties.Name="{x:Static Properties:Resources.MainView_Pause}"
+                            Visibility="{Binding IsEncoding, Converter={StaticResource boolToVisConverter}, ConverterParameter=false}">
+                        <Button.ToolTip>
+                            <TextBlock>
+                                <Run Text="{x:Static Properties:Resources.MainView_Pause}"/>
+                                <LineBreak/>
+                                <Run Text="Alt + P" FontStyle="Italic"/>
+                            </TextBlock>
+                        </Button.ToolTip>
+                        <Path Data="M 0,0 H 3 V 11 H 0 Z M 6,0 H 9 V 11 H 6 Z" Fill="{DynamicResource Wsq.Accent}" />
+                    </Button>
+                </Grid>
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </UserControl>

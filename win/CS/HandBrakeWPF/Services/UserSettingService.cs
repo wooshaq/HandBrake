@@ -314,6 +314,7 @@ namespace HandBrakeWPF.Services
             defaults.Add(UserSettingConstants.PlaySoundWhenDone, false);
             defaults.Add(UserSettingConstants.PlaySoundWhenQueueDone, false);
             defaults.Add(UserSettingConstants.WhenDoneAudioFile, string.Empty);
+            defaults.Add(UserSettingConstants.WsqShutdownArguments, "-s -t 60");
 
             // Video
             bool intelDefaultSetting = HandBrakeHardwareEncoderHelper.IsQsvAvailable;

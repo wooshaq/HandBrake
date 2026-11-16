@@ -75,6 +75,14 @@
                                       IsChecked="{Binding WhenDonePerformActionImmediately}" />
 
 
+                <!-- WsQ: configurable shutdown.exe arguments for the "Shutdown" action. -->
+                <TextBlock Text="{x:Static Properties:Resources.OptionsView_ShutdownArguments}" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,10,5,0" />
+                <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.Column="1" Margin="0,10,0,0">
+                    <TextBox Text="{Binding ShutdownArguments, UpdateSourceTrigger=PropertyChanged}" Width="250" />
+                    <Button Content="{x:Static Properties:Resources.OptionsView_ShutdownDefault}" Command="{Binding RelayCommand}" CommandParameter="ResetShutdownArguments" Margin="5,0,0,0" />
+                </StackPanel>
+                <TextBlock Text="{x:Static Properties:Resources.OptionsView_ShutdownArgumentsHint}" Grid.Row="6" Grid.Column="1" Margin="0,3,0,0" Style="{StaticResource subText}" TextWrapping="Wrap" MaxWidth="420" HorizontalAlignment="Left" />
+
                 <StackPanel Grid.Row="4" Grid.Column="1" Margin="0,15,0,0" Visibility="{Binding IsQueueDoneCustomActionEnabled, Converter={StaticResource boolToVisConverter}}">
                     <TextBlock Text="{x:Static Properties:Resources.OptionsView_CustomActionConfig}" ></TextBlock>
                     

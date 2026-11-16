@@ -1167,6 +1167,15 @@ Wskazówka: Nadpisywanie plików można kontrolować w preferencjach. </value>
   <data name="Options_Arguments" xml:space="preserve">
     <value>Argumenty:</value>
   </data>
+  <data name="OptionsView_ShutdownArguments" xml:space="preserve">
+    <value>shutdown.exe:</value>
+  </data>
+  <data name="OptionsView_ShutdownDefault" xml:space="preserve">
+    <value>Domyślne</value>
+  </data>
+  <data name="OptionsView_ShutdownArgumentsHint" xml:space="preserve">
+    <value>Parametry shutdown.exe dla akcji „Wyłącz komputer”. Domyślnie: -s -t 60 (wyłączenie po 60 s). Przykłady: -s -t 0 (od razu), -s -f -t 0 (wymuś zamknięcie programów), -r -t 60 (restart), -h (hibernacja).</value>
+  </data>
   <data name="Options_AutomaticFileNaming" xml:space="preserve">
     <value>Automatyczne nazywanie plików</value>
   </data>

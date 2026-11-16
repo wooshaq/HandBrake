@@ -4052,6 +4052,24 @@ namespace HandBrakeWPF.Properties {
                 return ResourceManager.GetString("Options_Arguments", resourceCulture);
             }
         }
+
+        public static string OptionsView_ShutdownArguments {
+            get {
+                return ResourceManager.GetString("OptionsView_ShutdownArguments", resourceCulture);
+            }
+        }
+
+        public static string OptionsView_ShutdownDefault {
+            get {
+                return ResourceManager.GetString("OptionsView_ShutdownDefault", resourceCulture);
+            }
+        }
+
+        public static string OptionsView_ShutdownArgumentsHint {
+            get {
+                return ResourceManager.GetString("OptionsView_ShutdownArgumentsHint", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Automatic File Naming.

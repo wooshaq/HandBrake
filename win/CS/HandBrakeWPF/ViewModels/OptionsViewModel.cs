@@ -95,6 +95,7 @@ namespace HandBrakeWPF.ViewModels
         private bool showStatusInTitleBar;
         private bool showPreviewOnSummaryTab;
         private string whenDoneAudioFile;
+        private string shutdownArguments;
         private bool playSoundWhenDone;
         private bool playSoundWhenQueueDone;
         private bool enableDirectXDecoding;
@@ -418,6 +419,22 @@ namespace HandBrakeWPF.ViewModels
                 this.whenDoneAudioFile = value;
                 this.NotifyOfPropertyChange(() => this.WhenDoneAudioFile);
             }
+        }
+
+        public string ShutdownArguments
+        {
+            get => this.shutdownArguments;
+            set
+            {
+                if (value == this.shutdownArguments) return;
+                this.shutdownArguments = value;
+                this.NotifyOfPropertyChange(() => this.ShutdownArguments);
+            }
+        }
+
+        public void ResetShutdownArguments()
+        {
+            this.ShutdownArguments = "-s -t 60";
         }
 
         public string WhenDoneAudioFileFullPath
@@ -1590,6 +1607,7 @@ namespace HandBrakeWPF.ViewModels
             this.WhenDonePerformActionImmediately = this.userSettingService.GetUserSetting<bool>(UserSettingConstants.WhenDonePerformActionImmediately);
             this.WhenDoneAudioFile = Path.GetFileNameWithoutExtension(this.userSettingService.GetUserSetting<string>(UserSettingConstants.WhenDoneAudioFile)) ?? string.Empty;
             this.WhenDoneAudioFileFullPath = this.userSettingService.GetUserSetting<string>(UserSettingConstants.WhenDoneAudioFile);
+            this.ShutdownArguments = this.userSettingService.GetUserSetting<string>(UserSettingConstants.WsqShutdownArguments) ?? "-s -t 60";
             this.PlaySoundWhenDone = this.userSettingService.GetUserSetting<bool>(UserSettingConstants.PlaySoundWhenDone);
             this.PlaySoundWhenQueueDone = this.userSettingService.GetUserSetting<bool>(UserSettingConstants.PlaySoundWhenQueueDone);
             this.SendSystemNotificationOnEncodeDone = this.userSettingService.GetUserSetting<bool>(UserSettingConstants.NotifyOnEncodeDone);
@@ -1872,6 +1890,7 @@ namespace HandBrakeWPF.ViewModels
             this.userSettingService.SetUserSetting(UserSettingConstants.PlaySoundWhenDone, this.PlaySoundWhenDone);
             this.userSettingService.SetUserSetting(UserSettingConstants.PlaySoundWhenQueueDone, this.PlaySoundWhenQueueDone);
             this.userSettingService.SetUserSetting(UserSettingConstants.WhenDoneAudioFile, this.WhenDoneAudioFileFullPath);
+            this.userSettingService.SetUserSetting(UserSettingConstants.WsqShutdownArguments, string.IsNullOrWhiteSpace(this.ShutdownArguments) ? "-s -t 60" : this.ShutdownArguments.Trim());
             this.userSettingService.SetUserSetting(UserSettingConstants.NotifyOnEncodeDone, this.SendSystemNotificationOnEncodeDone);
             this.userSettingService.SetUserSetting(UserSettingConstants.NotifyOnQueueDone, this.SendSystemNotificationOnQueueDone);
             this.userSettingService.SetUserSetting(UserSettingConstants.SendFileTo, this.SendFileToPath);
