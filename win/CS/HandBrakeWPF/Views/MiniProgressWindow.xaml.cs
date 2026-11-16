@@ -10,9 +10,11 @@
 namespace HandBrakeWPF.Views
 {
     using System;
+    using System.Runtime.InteropServices;
     using System.Globalization;
     using System.Windows;
     using System.Windows.Input;
+    using System.Windows.Interop;
     using System.Windows.Media;
     using System.Windows.Threading;
 
@@ -29,7 +31,11 @@ namespace HandBrakeWPF.Views
         private const double MaxScale = 3.0;
         private const double ScaleStep = 1.1;
 
+        private static readonly IntPtr HwndTopmost = new IntPtr(-1);
+        private const uint SwpNoSize = 0x0001, SwpNoMove = 0x0002, SwpNoActivate = 0x0010, SwpNoOwnerZOrder = 0x0200;
+
         private readonly DispatcherTimer saveTimer;
+        private readonly DispatcherTimer topmostTimer;
         private double lastPercent = -1;
         private double scale = 1.0;
         private bool isLoaded;
@@ -48,7 +54,18 @@ namespace HandBrakeWPF.Views
                 MiniProgressController.SavePlacement(this.Left, this.Top, this.scale);
             };
 
-            this.Loaded += (s, e) => this.isLoaded = true;
+            // Clicking the taskbar puts it above every topmost window; keep re-asserting our z-order so the
+            // circle stays visible above the taskbar (a brief flicker is accepted).
+            this.topmostTimer = new DispatcherTimer(DispatcherPriority.Background) { Interval = TimeSpan.FromMilliseconds(300) };
+            this.topmostTimer.Tick += (s, e) => this.ForceTopmost();
+
+            this.Loaded += (s, e) =>
+            {
+                this.isLoaded = true;
+                this.UpdateTopmostTimer();
+            };
+            this.IsVisibleChanged += (s, e) => this.UpdateTopmostTimer();
+            this.Closed += (s, e) => this.topmostTimer.Stop();
             this.Closing += (s, e) =>
             {
                 if (this.saveTimer.IsEnabled)
@@ -65,6 +82,41 @@ namespace HandBrakeWPF.Views
         {
             this.Topmost = topmost;
             this.topmostMenuItem.IsChecked = topmost;
+            this.UpdateTopmostTimer();
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
+
+        private void UpdateTopmostTimer()
+        {
+            if (this.topmostTimer == null)
+            {
+                return;
+            }
+
+            if (this.Topmost && this.IsVisible)
+            {
+                this.topmostTimer.Start();
+            }
+            else
+            {
+                this.topmostTimer.Stop();
+            }
+        }
+
+        private void ForceTopmost()
+        {
+            if (!this.Topmost || !this.IsVisible || this.ContextMenu?.IsOpen == true)
+            {
+                return;
+            }
+
+            IntPtr handle = new WindowInteropHelper(this).Handle;
+            if (handle != IntPtr.Zero)
+            {
+                SetWindowPos(handle, HwndTopmost, 0, 0, 0, 0, SwpNoMove | SwpNoSize | SwpNoActivate | SwpNoOwnerZOrder);
+            }
         }
 
         public void ApplyScale(double newScale)
@@ -100,8 +152,6 @@ namespace HandBrakeWPF.Views
                 this.progressArc.Opacity = 1;
             }
 
-            this.SetBadgeState(paused);
-
             this.statusTip.Text = string.Format(CultureInfo.CurrentCulture, "{0:0.0}%  {1}  {2}", percent, this.fpsText.Text, this.etaText.Text).Trim();
         }
 
@@ -109,17 +159,8 @@ namespace HandBrakeWPF.Views
         {
             this.fpsText.Text = Properties.Resources.MainView_Pause;
             this.progressArc.Opacity = 0.45;
-            this.SetBadgeState(true);
         }
 
-        /// <summary>
-        /// Paused -> the badge shows "play" (resume); encoding -> it shows "pause".
-        /// </summary>
-        private void SetBadgeState(bool paused)
-        {
-            this.playIcon.Visibility = paused ? Visibility.Visible : Visibility.Collapsed;
-            this.pauseIcon.Visibility = paused ? Visibility.Collapsed : Visibility.Visible;
-        }
 
         private static string FormatTime(TimeSpan t)
         {
@@ -213,16 +254,6 @@ namespace HandBrakeWPF.Views
             MiniProgressController.ShowMainWindow();
         }
 
-        private void PlayBadge_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            // Swallow the click so it doesn't start a window drag; a double-click on the badge counts as one toggle.
-            e.Handled = true;
-            if (e.ClickCount == 1)
-            {
-                MiniProgressController.TogglePause();
-            }
-        }
-
         private void PauseResume_OnClick(object sender, RoutedEventArgs e)
         {
             MiniProgressController.TogglePause();
@@ -232,6 +263,7 @@ namespace HandBrakeWPF.Views
         {
             bool topmost = this.topmostMenuItem.IsChecked;
             this.Topmost = topmost;
+            this.UpdateTopmostTimer();
             MiniProgressController.SaveTopmost(topmost);
         }
 

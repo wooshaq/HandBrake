@@ -53,20 +53,6 @@
         <TextBlock x:Name="fpsText" Text="" FontFamily="Consolas" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,7"
                    Foreground="{DynamicResource Wsq.Accent}" />
 
-        <!-- Play / pause badge in the bottom-right corner: starts / resumes or pauses encoding. -->
-        <Border x:Name="playBadge" Width="24" Height="24" CornerRadius="6" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-4,-4"
-                Background="{DynamicResource Wsq.Input}" BorderBrush="{DynamicResource Wsq.CardBorder}" BorderThickness="1" Cursor="Hand"
-                ToolTip="{x:Static Properties:Resources.MiniProgress_PauseResume}"
-                MouseLeftButtonDown="PlayBadge_OnMouseLeftButtonDown">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="6" ShadowDepth="1" Opacity="0.45" Color="Black" />
-            </Border.Effect>
-            <Grid>
-                <Path x:Name="playIcon" Data="M 0,0 L 8,5 L 0,10 Z" Fill="{DynamicResource Wsq.Accent}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,0,0" Visibility="Collapsed" />
-                <Path x:Name="pauseIcon" Data="M 0,0 H 3 V 10 H 0 Z M 5,0 H 8 V 10 H 5 Z" Fill="{DynamicResource Wsq.Accent}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Grid>
-        </Border>
-
         <TextBlock x:Name="statusTip" Visibility="Collapsed" />
     </Grid>
 </Window>
