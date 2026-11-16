@@ -714,8 +714,39 @@
             <StatusBarItem>
                 <TextBlock Text="{Binding Path=ProgramStatusLabel}" TextTrimming="CharacterEllipsis" Style="{StaticResource WsqMutedText}" />
             </StatusBarItem>
-            <StatusBarItem HorizontalAlignment="Right" ToolTip="{x:Static Properties:ResourcesTooltips.MainView_WhenDone}">
-                <Menu Background="Transparent" >
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <!-- WsQ: wide rounded play button before "When done"; shows pause while encoding. -->
+                    <Grid Margin="0,0,14,0" VerticalAlignment="Center">
+                        <Button x:Name="statusStart" Style="{StaticResource WsqPrimaryButton}" Width="96" Height="30" MinHeight="0" Padding="0"
+                                Command="{Binding RelayCommand}" CommandParameter="StartEncode"
+                                AutomationProperties.Name="{x:Static Properties:Resources.MainView_StartEncode}"
+                                Visibility="{Binding IsEncoding, Converter={StaticResource boolToVisConverter}, ConverterParameter=true}">
+                            <Button.ToolTip>
+                                <TextBlock>
+                                    <Run Text="{Binding StartLabel, Mode=OneWay, FallbackValue='{x:Static Properties:Resources.MainView_StartEncode}'}"/>
+                                    <LineBreak/>
+                                    <Run Text="Ctrl + E" FontStyle="Italic"/>
+                                </TextBlock>
+                            </Button.ToolTip>
+                            <Path Data="M 0,0 L 9,5.5 L 0,11 Z" Fill="{DynamicResource Wsq.AccentText}" Margin="2,0,0,0" />
+                        </Button>
+                        <Button x:Name="statusPause" Style="{StaticResource WsqButton}" Width="96" Height="30" MinHeight="0" Padding="0"
+                                Command="{Binding RelayCommand}" CommandParameter="PauseEncode"
+                                AutomationProperties.Name="{x:Static Properties:Resources.MainView_Pause}"
+                                Visibility="{Binding IsEncoding, Converter={StaticResource boolToVisConverter}, ConverterParameter=false}">
+                            <Button.ToolTip>
+                                <TextBlock>
+                                    <Run Text="{x:Static Properties:Resources.MainView_Pause}"/>
+                                    <LineBreak/>
+                                    <Run Text="Alt + P" FontStyle="Italic"/>
+                                </TextBlock>
+                            </Button.ToolTip>
+                            <Path Data="M 0,0 H 3 V 11 H 0 Z M 6,0 H 9 V 11 H 6 Z" Fill="{DynamicResource Wsq.Accent}" />
+                        </Button>
+                    </Grid>
+
+                <Menu Background="Transparent" VerticalAlignment="Center" ToolTip="{x:Static Properties:ResourcesTooltips.MainView_WhenDone}">
                     <MenuItem>
                         <MenuItem.Header>
                             <StackPanel VerticalAlignment="Center" Orientation="Horizontal" MinHeight="26">
@@ -737,38 +768,7 @@
                         <MenuItem x:Name="quit" Command="{Binding DataContext.WhenDoneCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type StatusBar}}}" CommandParameter="6" Header="{x:Static Properties:Resources.WhenDone_QuitHandBrake}"/>
                     </MenuItem>
                 </Menu>
-            </StatusBarItem>
-
-            <!-- WsQ: quick start button (rounded square with play) in the bottom-right corner; shows pause while encoding. -->
-            <StatusBarItem HorizontalAlignment="Right" Margin="6,0,0,0">
-                <Grid>
-                    <Button x:Name="statusStart" Style="{StaticResource WsqPrimaryButton}" Width="30" Height="30" MinHeight="0" Padding="0"
-                            Command="{Binding RelayCommand}" CommandParameter="StartEncode"
-                            AutomationProperties.Name="{x:Static Properties:Resources.MainView_StartEncode}"
-                            Visibility="{Binding IsEncoding, Converter={StaticResource boolToVisConverter}, ConverterParameter=true}">
-                        <Button.ToolTip>
-                            <TextBlock>
-                                <Run Text="{Binding StartLabel, Mode=OneWay, FallbackValue='{x:Static Properties:Resources.MainView_StartEncode}'}"/>
-                                <LineBreak/>
-                                <Run Text="Ctrl + E" FontStyle="Italic"/>
-                            </TextBlock>
-                        </Button.ToolTip>
-                        <Path Data="M 0,0 L 9,5.5 L 0,11 Z" Fill="{DynamicResource Wsq.AccentText}" Margin="2,0,0,0" />
-                    </Button>
-                    <Button x:Name="statusPause" Style="{StaticResource WsqButton}" Width="30" Height="30" MinHeight="0" Padding="0"
-                            Command="{Binding RelayCommand}" CommandParameter="PauseEncode"
-                            AutomationProperties.Name="{x:Static Properties:Resources.MainView_Pause}"
-                            Visibility="{Binding IsEncoding, Converter={StaticResource boolToVisConverter}, ConverterParameter=false}">
-                        <Button.ToolTip>
-                            <TextBlock>
-                                <Run Text="{x:Static Properties:Resources.MainView_Pause}"/>
-                                <LineBreak/>
-                                <Run Text="Alt + P" FontStyle="Italic"/>
-                            </TextBlock>
-                        </Button.ToolTip>
-                        <Path Data="M 0,0 H 3 V 11 H 0 Z M 6,0 H 9 V 11 H 6 Z" Fill="{DynamicResource Wsq.Accent}" />
-                    </Button>
-                </Grid>
+                </StackPanel>
             </StatusBarItem>
         </StatusBar>
     </Grid>
